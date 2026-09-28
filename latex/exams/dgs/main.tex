@@ -1,0 +1,71 @@
+\documentclass[11pt,a4paper]{book}
+\usepackage[mixed]{preamble}
+\usepackage{lecture}
+% \lecturelevel{chapter}  % book sınıfında varsayılan: \topic -> \chapter
+
+\title{DGS Mathematics}
+\author{math-lab}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\maketitle
+
+\chapter*{Preface}
+Bu kitap Dikey Geçiş Sınavı (DGS) sayısal bölümünün matematik ve geometri
+konularını ispat tarzında anlatır. Konu anlatımları \texttt{topics/}, sorular
+\texttt{problems/} altında tutulur ve bu kitap yalnızca onları sıralar; aynı
+konular TYT ve AYT kitaplarında da ortak kullanılır.
+
+\tableofcontents
+
+\mainmatter
+
+% --- Yol haritası ------------------------------------------------------------
+% Konu yazıldıkça ilgili satırın yorumunu kaldırın. Her konudan sonra o konunun
+% soruları \input edilir, ör.
+%   \input{problems/number-theory/elementary/divisibility/dgs-2024-07}
+%
+% Temel kavramlar ve sayılar
+% \input{topics/number-theory/elementary/integers}          % Temel kavramlar, sayı kümeleri
+% \input{topics/number-theory/elementary/digits}            % Sayı basamakları
+% \input{topics/number-theory/elementary/divisibility}      % Bölme ve bölünebilme
+% \input{topics/number-theory/elementary/gcd-lcm}           % EBOB–EKOK
+% \input{topics/algebra/elementary/rational-numbers}        % Rasyonel ve ondalık sayılar
+% \input{topics/algebra/elementary/inequalities}            % Basit eşitsizlikler
+% \input{topics/algebra/elementary/absolute-value}          % Mutlak değer
+% \input{topics/algebra/elementary/exponents}               % Üslü sayılar
+% \input{topics/algebra/elementary/radicals}                % Köklü sayılar
+% \input{topics/algebra/elementary/factoring}               % Çarpanlara ayırma
+% \input{topics/algebra/elementary/ratio-proportion}        % Oran–orantı
+% \input{topics/algebra/elementary/linear-equations}        % Denklem çözme
+%
+% Problemler
+% \input{topics/algebra/elementary/word-problems}           % Sayı, kesir, yaş, işçi, hareket,
+%                                                           % yüzde–kâr–zarar, karışım
+%
+% Kümeler, fonksiyonlar, işlemler
+% \input{topics/foundations/sets/sets}                      % Kümeler
+% \input{topics/foundations/sets/functions}                 % Fonksiyonlar
+% \input{topics/algebra/elementary/operations}              % İşlem
+% \input{topics/number-theory/elementary/modular-arithmetic} % Modüler aritmetik
+%
+% Sayma ve olasılık
+% \input{topics/combinatorics/enumerative/counting}         % Permütasyon, kombinasyon
+% \input{topics/probability-statistics/elementary/probability} % Olasılık
+% \input{topics/probability-statistics/elementary/data}     % Tablo ve grafik yorumlama
+%
+% Geometri
+% \input{topics/geometry/euclidean/angles}                  % Doğruda ve üçgende açılar
+% \input{topics/geometry/euclidean/triangles}               % Özel üçgenler, benzerlik, alan
+% \input{topics/geometry/euclidean/polygons}                % Çokgenler ve dörtgenler
+% \input{topics/geometry/euclidean/circles}                 % Çember ve daire
+% \input{topics/geometry/analytic/plane}                    % Analitik geometri
+% \input{topics/geometry/solid/solids}                      % Katı cisimler
+
+\backmatter
+% Kaynakça ilk \cite ile birlikte açılır:
+% \bibliographystyle{plain}
+% \bibliography{refs}
+
+\end{document}

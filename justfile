@@ -1,7 +1,8 @@
 # math-lab görevleri. `just --list` ile hepsini görün.
 
-# LaTeX belgelerini bulur (latex/ dizinine göre, build/ hariç)
-tex_docs := "find notes research -name main.tex -not -path '*/build/*' -print0"
+# Derlenecek belgeler: notes/, research/, exams/ altındaki <klasör>/main.tex.
+# topics/ ve problems/ tek başına derlenmez, kitaplar tarafından \input edilir.
+tex_docs := "find notes research exams -mindepth 2 -maxdepth 2 -name main.tex -print0"
 
 default:
     @just --list
