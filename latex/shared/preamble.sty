@@ -1,13 +1,16 @@
 % math-lab ortak preamble
 % Kullanım: \usepackage{preamble}            (varsayılan: Türkçe)
 %           \usepackage[english]{preamble}   (İngilizce belge)
+%           \usepackage[mixed]{preamble}     (Türkçe metin, İngilizce başlık/ortam adları)
 % pdfLaTeX ve LuaLaTeX ile derlenir.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{preamble}[2026/09/28 math-lab shared preamble]
 
 \newif\ifml@english
-\DeclareOption{english}{\ml@englishtrue}
-\DeclareOption{turkish}{\ml@englishfalse}
+\newif\ifml@mixed
+\DeclareOption{english}{\ml@englishtrue\ml@mixedfalse}
+\DeclareOption{turkish}{\ml@englishfalse\ml@mixedfalse}
+\DeclareOption{mixed}{\ml@englishfalse\ml@mixedtrue}
 \ProcessOptions\relax
 
 % --- Motor / font ---------------------------------------------------------
@@ -28,6 +31,22 @@
   \RequirePackage[shorthands=off,turkish]{babel}
 \fi
 
+% mixed: tireleme ve tarih Türkçe kalır; sabit başlıklar İngilizce olur.
+% Başlıklar İngilizce olduğu için büyük harfe çevirmede Türkçe i -> İ
+% kuralı kapatılır (aksi halde sayfa başlığında "DİVİSİON" çıkar).
+\ifml@mixed
+  \addto\captionsturkish{%
+    \def\proofname{Proof}\def\contentsname{Contents}%
+    \def\chaptername{Chapter}\def\appendixname{Appendix}%
+    \def\partname{Part}\def\bibname{Bibliography}%
+    \def\refname{References}\def\abstractname{Abstract}%
+    \def\figurename{Figure}\def\tablename{Table}%
+    \def\indexname{Index}\def\listfigurename{List of Figures}%
+    \def\listtablename{List of Tables}\def\prefacename{Preface}}
+  \DeclareUppercaseMapping[tr]{"0069}{I}
+  \DeclareLowercaseMapping[tr]{"0049}{i}
+\fi
+
 % --- Matematik ------------------------------------------------------------
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -40,7 +59,7 @@
 
 % --- Teorem ortamları -------------------------------------------------------
 % Ortam adları dile göre; hepsi tek sayaç paylaşır (bölüm bazında).
-\ifml@english
+\ifnum\ifml@english1\else\ifml@mixed1\else0\fi\fi=1
   \def\ml@thm{Theorem}\def\ml@lem{Lemma}\def\ml@prop{Proposition}
   \def\ml@cor{Corollary}\def\ml@def{Definition}\def\ml@ex{Example}
   \def\ml@rem{Remark}
@@ -64,7 +83,8 @@
 \newtheorem{remark}[theorem]{\ml@rem}
 
 % cleveref Türkçeyi bilmez; adları elle ver. (proof ortamı amsthm'den gelir.)
-\ifml@english\else
+% english ve mixed modda cleveref'in İngilizce varsayılanları kullanılır.
+\ifnum\ifml@english1\else\ifml@mixed1\else0\fi\fi=0
   \crefname{theorem}{teorem}{teoremler}\Crefname{theorem}{Teorem}{Teoremler}
   \crefname{lemma}{lemma}{lemmalar}\Crefname{lemma}{Lemma}{Lemmalar}
   \crefname{proposition}{önerme}{önermeler}\Crefname{proposition}{Önerme}{Önermeler}

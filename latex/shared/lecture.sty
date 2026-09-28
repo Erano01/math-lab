@@ -1,0 +1,70 @@
+% math-lab konu anlatımı / soru ortamları
+% Kullanım: \usepackage[...]{preamble} ardından \usepackage{lecture}
+%
+% Konu dosyaları (topics/) \chapter / \section kullanmaz; bunun yerine
+% \topic, \subtopic, \subsubtopic kullanır. Kitap (main.tex) bunların hangi
+% seviyeye eşleneceğini \lecturelevel ile seçer:
+%   \lecturelevel{chapter}  ->  chapter / section / subsection
+%   \lecturelevel{section}  ->  section / subsection / subsubsection
+% Varsayılan: sınıfta \chapter varsa chapter, yoksa section.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{lecture}[2026/09/28 math-lab lecture environments]
+
+\@ifpackageloaded{preamble}{}{%
+  \PackageError{lecture}{Önce preamble yüklenmeli}{\string\usepackage{preamble} ekleyin.}}
+
+% --- Başlık seviyeleri ------------------------------------------------------
+\def\ml@chapter{chapter}\def\ml@section{section}
+\newcommand{\lecturelevel}[1]{%
+  \edef\ml@tmp{#1}%
+  \ifx\ml@tmp\ml@chapter
+    \def\ml@lvl@i{chapter}\def\ml@lvl@ii{section}\def\ml@lvl@iii{subsection}%
+  \else\ifx\ml@tmp\ml@section
+    \def\ml@lvl@i{section}\def\ml@lvl@ii{subsection}\def\ml@lvl@iii{subsubsection}%
+  \else
+    \PackageError{lecture}{Bilinmeyen seviye: #1}{chapter ya da section kullanın.}%
+  \fi\fi}
+\@ifundefined{chapter}{\lecturelevel{section}}{\lecturelevel{chapter}}
+
+% \ml@heading{<seviye>}{<yıldız>}{<kısa başlık>}{<başlık>}
+\newcommand{\ml@heading}[4]{%
+  \IfBooleanTF{#2}%
+    {\csname #1\endcsname*{#4}}%
+    {\IfNoValueTF{#3}{\csname #1\endcsname{#4}}{\csname #1\endcsname[#3]{#4}}}}
+\NewDocumentCommand{\topic}{s o m}{\ml@heading{\ml@lvl@i}{#1}{#2}{#3}}
+\NewDocumentCommand{\subtopic}{s o m}{\ml@heading{\ml@lvl@ii}{#1}{#2}{#3}}
+\NewDocumentCommand{\subsubtopic}{s o m}{\ml@heading{\ml@lvl@iii}{#1}{#2}{#3}}
+
+% --- Ortam adları -----------------------------------------------------------
+\ifnum\ifml@english1\else\ifml@mixed1\else0\fi\fi=1
+  \def\ml@exercise{Exercise}\def\ml@solution{Solution}\def\ml@answer{Answer}
+  \def\ml@shortcut{Shortcut}\def\ml@pitfall{Pitfall}\def\ml@keyfacts{Key Facts}
+\else
+  \def\ml@exercise{Alıştırma}\def\ml@solution{Çözüm}\def\ml@answer{Cevap}
+  \def\ml@shortcut{Kısa Yol}\def\ml@pitfall{Dikkat}\def\ml@keyfacts{Özet}
+\fi
+
+% --- Soru ortamları ---------------------------------------------------------
+% Soru metni: preamble'daki `example` ya da aşağıdaki `exercise`.
+\theoremstyle{definition}
+\newtheorem{exercise}[theorem]{\ml@exercise}
+
+% Çözüm: proof gibi, sonunda kutu işareti.
+\newenvironment{solution}{\begin{proof}[\ml@solution]}{\end{proof}}
+
+% Kısa cevap: \answer{11}
+\newcommand{\answer}[1]{\par\noindent\textbf{\ml@answer:}~#1\par}
+
+% --- Ders notu kutuları -----------------------------------------------------
+\theoremstyle{remark}
+\newtheorem*{shortcut}{\ml@shortcut}
+\newtheorem*{pitfall}{\ml@pitfall}
+\theoremstyle{definition}
+\newtheorem*{keyfacts}{\ml@keyfacts}
+
+\crefname{exercise}{exercise}{exercises}\Crefname{exercise}{Exercise}{Exercises}
+\ifnum\ifml@english1\else\ifml@mixed1\else0\fi\fi=0
+  \crefname{exercise}{alıştırma}{alıştırmalar}\Crefname{exercise}{Alıştırma}{Alıştırmalar}
+\fi
+
+\endinput

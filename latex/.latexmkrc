@@ -1,15 +1,18 @@
 # latexmk ayarları. `latex/` dizininden `-cd` ile çalıştırın:
-#   cd latex && latexmk -cd notes/<konu>/main.tex
+#   cd latex && latexmk -cd exams/dgs/main.tex
 # (`just pdf` bunu sizin için yapar.)
 
 use Cwd qw(abs_path);
 use File::Basename qw(dirname);
 
-# Bu dosyanın bulunduğu dizin -> latex/shared (mutlak yol; -cd sonrası da geçerli)
-my $shared = dirname(abs_path(__FILE__)) . '/shared';
+# Bu dosyanın bulunduğu dizin = latex/ (mutlak yol; -cd sonrası da geçerli)
+my $root   = dirname(abs_path(__FILE__));
+my $shared = "$root/shared";
 
-# Sondaki boş eleman (//:) TeX'in varsayılan arama yollarını korur.
-ensure_path('TEXINPUTS', "$shared//");
+# latex/ kökü özyinelemesiz eklenir: \input{topics/...} her belgeden çalışır,
+# ama TeX build/ klasörlerini ya da başka main.tex dosyalarını taramaz.
+# ensure_path TeX'in varsayılan arama yollarını korur.
+ensure_path('TEXINPUTS', "$root", "$shared//");
 ensure_path('BIBINPUTS', "$shared//");
 ensure_path('BSTINPUTS', "$shared//");
 
