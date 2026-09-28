@@ -1,0 +1,31 @@
+name: LaTeX
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # latex/ içinden -cd ile çalışır; böylece latex/.latexmkrc
+      # (TEXINPUTS -> shared/, build/ çıktı dizini) okunur.
+      - name: Compile LaTeX documents
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: latex
+          root_file: |
+            notes/*/main.tex
+            research/*/main.tex
+          args: -cd -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: pdfs
+          path: latex/**/build/*.pdf
+          if-no-files-found: error

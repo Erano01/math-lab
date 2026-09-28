@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{preamble}
+
+\title{Lineer Cebir Notları}
+\author{math-lab}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Boyut ve rank}
+
+\begin{definition}\label{def:rank}
+  $T \colon V \to W$ lineer bir dönüşüm olsun. $T$'nin \emph{rank}'i,
+  görüntü uzayının boyutudur: $\rank T = \dim \Img T$.
+\end{definition}
+
+Aşağıdaki sonuç lineer cebirin temel teoremlerinden biridir;
+ayrıntılar için bkz.~\cite{axler2024}.
+
+\begin{theorem}[Rank--nullity]\label{thm:rank-nullity}
+  $V$ sonlu boyutlu bir vektör uzayı ve $T \colon V \to W$ lineer olsun. Bu durumda
+  \begin{equation}\label{eq:rank-nullity}
+    \dim V = \dim \Ker T + \rank T.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  $u_1, \dots, u_m$ vektörleri $\Ker T$'nin bir tabanı olsun. Bunları
+  $v_1, \dots, v_n$ vektörleri ile $V$'nin bir tabanına genişletelim. Her $v \in V$ için
+  \[
+    v = \sum_{i=1}^{m} a_i u_i + \sum_{j=1}^{n} b_j v_j
+    \quad\Longrightarrow\quad
+    Tv = \sum_{j=1}^{n} b_j\, T v_j,
+  \]
+  dolayısıyla $\Img T = \Span(Tv_1, \dots, Tv_n)$ olur.
+
+  Bu vektörlerin lineer bağımsız olduğunu gösterelim: $\sum_j c_j T v_j = 0$
+  ise $T\bigl(\sum_j c_j v_j\bigr) = 0$, yani $\sum_j c_j v_j \in \Ker T$.
+  Böylece bazı $d_i \in \R$ için $\sum_j c_j v_j = \sum_i d_i u_i$ yazılır;
+  tabanın lineer bağımsızlığından tüm $c_j = 0$ bulunur.
+
+  Sonuç olarak $\rank T = n$, $\dim \Ker T = m$ ve $\dim V = m + n$; bu da
+  \cref{eq:rank-nullity}'i verir.
+\end{proof}
+
+\begin{corollary}\label{cor:injective}
+  $\dim V = \dim W < \infty$ ise $T$ birebirdir $\iff$ örtendir.
+\end{corollary}
+
+\begin{proof}
+  $T$ birebir $\iff \dim \Ker T = 0 \iff \rank T = \dim V = \dim W$
+  (\cref{thm:rank-nullity}) $\iff T$ örten.
+\end{proof}
+
+\begin{remark}
+  Bu teoremin Lean~4 ile formalleştirilmiş hâli için bkz.\\
+  \nolinkurl{lean/MathLab/LinearAlgebra/RankNullity.lean}.
+\end{remark}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

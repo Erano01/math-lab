@@ -1,0 +1,98 @@
+% math-lab ortak preamble
+% Kullanım: \usepackage{preamble}            (varsayılan: Türkçe)
+%           \usepackage[english]{preamble}   (İngilizce belge)
+% pdfLaTeX ve LuaLaTeX ile derlenir.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble}[2026/09/28 math-lab shared preamble]
+
+\newif\ifml@english
+\DeclareOption{english}{\ml@englishtrue}
+\DeclareOption{turkish}{\ml@englishfalse}
+\ProcessOptions\relax
+
+% --- Motor / font ---------------------------------------------------------
+\RequirePackage{iftex}
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage[utf8]{inputenc}
+  \RequirePackage{lmodern}
+\else
+  \RequirePackage{fontspec}
+\fi
+
+% --- Dil ------------------------------------------------------------------
+% shorthands=off: babel-turkish '=' karakterini aktif yapar; tikz vb. bozulmasın.
+\ifml@english
+  \RequirePackage[english]{babel}
+\else
+  \RequirePackage[shorthands=off,turkish]{babel}
+\fi
+
+% --- Matematik ------------------------------------------------------------
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathtools}
+
+% --- Referanslar (hyperref sonra cleveref, en sonda) ----------------------
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage[nameinlink,noabbrev]{cleveref}
+
+% --- Teorem ortamları -------------------------------------------------------
+% Ortam adları dile göre; hepsi tek sayaç paylaşır (bölüm bazında).
+\ifml@english
+  \def\ml@thm{Theorem}\def\ml@lem{Lemma}\def\ml@prop{Proposition}
+  \def\ml@cor{Corollary}\def\ml@def{Definition}\def\ml@ex{Example}
+  \def\ml@rem{Remark}
+\else
+  \def\ml@thm{Teorem}\def\ml@lem{Lemma}\def\ml@prop{Önerme}
+  \def\ml@cor{Sonuç}\def\ml@def{Tanım}\def\ml@ex{Örnek}
+  \def\ml@rem{Not}
+\fi
+
+\theoremstyle{plain}
+\newtheorem{theorem}{\ml@thm}[section]
+\newtheorem{lemma}[theorem]{\ml@lem}
+\newtheorem{proposition}[theorem]{\ml@prop}
+\newtheorem{corollary}[theorem]{\ml@cor}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{\ml@def}
+\newtheorem{example}[theorem]{\ml@ex}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{\ml@rem}
+
+% cleveref Türkçeyi bilmez; adları elle ver. (proof ortamı amsthm'den gelir.)
+\ifml@english\else
+  \crefname{theorem}{teorem}{teoremler}\Crefname{theorem}{Teorem}{Teoremler}
+  \crefname{lemma}{lemma}{lemmalar}\Crefname{lemma}{Lemma}{Lemmalar}
+  \crefname{proposition}{önerme}{önermeler}\Crefname{proposition}{Önerme}{Önermeler}
+  \crefname{corollary}{sonuç}{sonuçlar}\Crefname{corollary}{Sonuç}{Sonuçlar}
+  \crefname{definition}{tanım}{tanımlar}\Crefname{definition}{Tanım}{Tanımlar}
+  \crefname{example}{örnek}{örnekler}\Crefname{example}{Örnek}{Örnekler}
+  \crefname{remark}{not}{notlar}\Crefname{remark}{Not}{Notlar}
+  \crefname{equation}{denklem}{denklemler}\Crefname{equation}{Denklem}{Denklemler}
+  \crefname{section}{bölüm}{bölümler}\Crefname{section}{Bölüm}{Bölümler}
+  \crefname{figure}{şekil}{şekiller}\Crefname{figure}{Şekil}{Şekiller}
+  \crefname{table}{tablo}{tablolar}\Crefname{table}{Tablo}{Tablolar}
+\fi
+
+% --- Kısa makrolar --------------------------------------------------------
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Img}{Im}
+
+\endinput
