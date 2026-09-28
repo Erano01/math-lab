@@ -19,6 +19,7 @@ jobs:
         with:
           working_directory: latex
           root_file: |
+            exams/*/main.tex
             notes/*/main.tex
             research/*/main.tex
           args: -cd -pdf -file-line-error -halt-on-error -interaction=nonstopmode
